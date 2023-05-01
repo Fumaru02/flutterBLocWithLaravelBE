@@ -25,17 +25,35 @@ class _HomePageState extends State<HomePage> {
             builder: (context, state) {
           return Container(
             margin: EdgeInsets.symmetric(horizontal: 25.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                homePageText("Hello", color: AppColors.primaryThirdElementText),
-                homePageText("Fadilah Umar", top: 5),
-                SizedBox(
-                  height: 20.h,
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: homePageText("Hello",
+                      color: AppColors.primaryThirdElementText),
                 ),
-                searchView(),
-                slidersView(context, state),
-                menuView()
+                SliverToBoxAdapter(child: homePageText("Fadilah Umar", top: 5)),
+                SliverPadding(
+                  padding: EdgeInsets.only(top: 20.h),
+                ),
+                SliverToBoxAdapter(child: searchView()),
+                SliverToBoxAdapter(child: slidersView(context, state)),
+                SliverToBoxAdapter(child: menuView()),
+                SliverPadding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 18.h, horizontal: 0.w),
+                    sliver: SliverGrid(
+                      delegate: SliverChildBuilderDelegate(childCount: 4,
+                          (BuildContext context, int index) {
+                        return GestureDetector(
+                            onTap: () {}, child: courseGrid());
+                      }),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 15,
+                              crossAxisSpacing: 15,
+                              childAspectRatio: 1.6),
+                    ))
               ],
             ),
           );

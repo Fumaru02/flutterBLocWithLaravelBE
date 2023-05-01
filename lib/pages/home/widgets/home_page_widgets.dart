@@ -2,6 +2,7 @@ import 'package:bloc_flutter/common/values/colors.dart';
 import 'package:bloc_flutter/pages/home/bloc/home_page_blocs.dart';
 import 'package:bloc_flutter/pages/home/bloc/home_page_events.dart';
 import 'package:bloc_flutter/pages/home/bloc/home_page_states.dart';
+import 'package:bloc_flutter/pages/widgets/base_text_widgets.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -169,9 +170,9 @@ Widget menuView() {
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _reusableMenuText("Choose your course"),
+              reusableTextGlobal("Choose your course"),
               GestureDetector(
-                child: _reusableMenuText("See all",
+                child: reusableTextGlobal("See all",
                     color: AppColors.primaryThirdElementText, fontSize: 10),
               )
             ],
@@ -180,18 +181,13 @@ Widget menuView() {
         margin: EdgeInsets.only(top: 20.w),
         child: Row(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                  color: AppColors.primaryElement,
-                  borderRadius: BorderRadius.circular(7.w),
-                  border: Border.all(color: AppColors.primaryElement)),
-              child: _reusableMenuText("All",
-                  color: AppColors.primaryElementText,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 11),
-              padding: EdgeInsets.only(
-                  left: 15.w, right: 15.w, top: 5.h, bottom: 5.h),
-            )
+            _reusableMenuText("All"),
+            _reusableMenuText("Popular",
+                textColor: AppColors.primaryThirdElementText,
+                backgroundColor: Colors.white),
+            _reusableMenuText("Newest",
+                textColor: AppColors.primaryThirdElementText,
+                backgroundColor: Colors.white),
           ],
         ),
       )
@@ -199,15 +195,62 @@ Widget menuView() {
   );
 }
 
-Widget _reusableMenuText(String text,
-    {Color color = AppColors.primaryText,
-    int fontSize = 16,
-    FontWeight fontWeight = FontWeight.bold}) {
+//for the menu buttons, reusable text
+Widget _reusableMenuText(String menuText,
+    {Color textColor: AppColors.primaryElementText,
+    Color backgroundColor: AppColors.primaryElement}) {
   return Container(
-    child: Text(
-      text,
-      style: TextStyle(
-          color: color, fontWeight: fontWeight, fontSize: fontSize.sp),
+    margin: EdgeInsets.only(right: 20.w),
+    decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(7.w),
+        border: Border.all(color: backgroundColor)),
+    padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 5.h, bottom: 5.h),
+    child: reusableTextGlobal(menuText,
+        color: textColor, fontWeight: FontWeight.normal, fontSize: 11),
+  );
+}
+
+//for course grid view ui
+Widget courseGrid() {
+  return Container(
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15.w),
+        image: const DecorationImage(
+            fit: BoxFit.fill, image: AssetImage("assets/icons/Image_1.png"))),
+    child: Container(
+      padding: EdgeInsets.all(12.h),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Best course for IT",
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+            textAlign: TextAlign.left,
+            softWrap: false,
+            style: TextStyle(
+                color: AppColors.primaryElementText,
+                fontWeight: FontWeight.bold,
+                fontSize: 11.sp),
+          ),
+          SizedBox(
+            height: 5.h,
+          ),
+          Text(
+            "FLutter best course",
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+            textAlign: TextAlign.left,
+            softWrap: false,
+            style: TextStyle(
+                color: AppColors.primaryFourElementText,
+                fontWeight: FontWeight.normal,
+                fontSize: 8.sp),
+          ),
+        ],
+      ),
     ),
   );
 }

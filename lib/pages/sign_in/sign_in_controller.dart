@@ -46,8 +46,8 @@ class SignInController {
             print("user exist");
             Global.storageService
                 .setString(AppConstants.STORAGE_USER_TOKEN_KEY, "12345678");
-            // Navigator.of(context)
-            //     .pushNamedAndRemoveUntil("/application", (route) => false);
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil("/application", (route) => false);
           } else {
             //we have error getting user from firebase
             toastInfo(msg: "Currently you are not user of this app");
