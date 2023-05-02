@@ -1,10 +1,13 @@
+import 'package:bloc_flutter/common/entities/entities.dart';
 import 'package:bloc_flutter/common/values/constant.dart';
 import 'package:bloc_flutter/pages/sign_in/bloc/sign_in_blocs.dart';
 import 'package:bloc_flutter/pages/widgets/flutter_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
+import '../../common/api/user_api.dart';
 import '../../global.dart';
 
 class SignInController {
@@ -42,8 +45,23 @@ class SignInController {
 
           var user = credential.user;
           if (user != null) {
+            String? displayName = user.displayName;
+            String? email = user.email;
+            String? id = user.uid;
+            String? photoURL = user.photoURL;
+
+            LoginRequestEntity loginRequestEntity = LoginRequestEntity();
+            loginRequestEntity.avatar = photoURL;
+            loginRequestEntity.name = displayName;
+            loginRequestEntity.email = email;
+            loginRequestEntity.open_id = id;
+            ////type 1 means email login
+            loginRequestEntity.type = 1;
+
+            print("user open");
             //we got verfied user from firebase
             print("user exist");
+            asyncPostAllData(loginRequestEntity);
             Global.storageService
                 .setString(AppConstants.STORAGE_USER_TOKEN_KEY, "12345678");
             Navigator.of(context)
@@ -70,5 +88,14 @@ class SignInController {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  Future<void> asyncPostAllData(LoginRequestEntity loginRequestEntity) async {
+    EasyLoading.show(
+        indicator: CircularProgressIndicator(),
+        maskType: EasyLoadingMaskType.clear,
+        dismissOnTap: true);
+
+    var result = await UserAPI.login(params: loginRequestEntity);
   }
 }
